@@ -1,3 +1,5 @@
+var types = require('./types');
+
 var Reader = function(tokens, position) {
   this.tokens = tokens || [];
   this.position = position || 0;
@@ -12,17 +14,14 @@ Reader.prototype.peek = function() {
 };
 
 var read_form = function(reader) {
-  var val;
   switch (reader.peek()) {
-    case '(': 
-      val = read_list(reader); 
-      break;
+    case ')':
+      throw new Error('unexpected )');
+    case '(':
+      return read_list(reader);
     default:
-      val = read_atom(reader);
-      break;
+      return read_atom(reader);
   }
-
-  return val;
 };
 
 var read_str = function(str) {
@@ -30,8 +29,15 @@ var read_str = function(str) {
   return read_form(reader);
 };
 
+// the make a lisp guide didn't explicitly
+// say this but read_atom must read the next
+// token, not PEEK.
 var read_atom = function(reader) {
-  return reader.peek();
+  var token = reader.next();
+  if ( /^\d+$/.test(token) )
+    return new types.Number(token);
+  else
+    return new types.Symbol(token);
 };
 
 var tokenize = function(str) {
@@ -47,12 +53,18 @@ var tokenize = function(str) {
 };
 
 var read_list = function(reader) {
-  var match;
+  var token = reader.next();
   var list = [];
-  do {
-    match = read_form(reader);
-    list.push(match);
-  } while( match != ')'); 
-  return list;
+  if ( token !== '(' )
+    throw new Error('expected (');
+  while( (token = reader.peek()) !== ')') {
+    if (!token) {
+      throw new Error('expected ), got eof');
+    }
+    list.push(read_form(reader));
+  }
+  reader.next();
+  return new types.List(list);
 };
+
 module.exports = read_str;
