@@ -67,4 +67,7 @@ var read_list = function(reader) {
   return new types.List(list);
 };
 
-module.exports = read_str;
+// expose fns
+module.exports = {
+  read_str: read_str
+};
