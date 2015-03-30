@@ -14,6 +14,18 @@ var types = {
 
   Float: function(float) {
     this.value = parseFloat(float);
+  },
+
+  String: function(str) {
+    this.value = str;
+  },
+
+  Nil: function() {
+    this.value = 'nil';
+  },
+
+  Boolean: function(bool) {
+    this.value = !!bool;
   }
 };
 

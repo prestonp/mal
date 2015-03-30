@@ -36,6 +36,14 @@ var read_atom = function(reader) {
   var token = reader.next();
   if ( /^\d+$/.test(token) )
     return new types.Number(token);
+  else if ( /^nil$/.test(token) )
+    return new types.Nil();
+  else if ( /^true$/.test(token) )
+    return new types.Boolean(true);
+  else if ( /^false$/.test(token) )
+    return new types.Boolean(false);
+  else if ( token.charAt(0) === '"' )
+    return new types.String(token.slice(1, token.length-1));
   else
     return new types.Symbol(token);
 };
