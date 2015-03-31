@@ -19,7 +19,7 @@ var pr_str = function(ast, print_readably) {
     case types.List:
       return '(' + ast.value.map(pr_str).join(' ') + ')';
     default:
-      throw new Error('Unexpected type', ast);
+      return ast;
   }
 };
 
