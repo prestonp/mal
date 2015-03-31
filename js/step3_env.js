@@ -21,9 +21,16 @@ var EVAL = function(ast, env) {
   if ( ast.constructor === types.List ) {
     var list = ast.value;
     if (list[0].constructor === types.Symbol && list[0].value === 'def!') {
-      return env.set(list[1], eval_ast(list[2], env));
+      return env.set(list[1], EVAL(list[2], env));
     } else if (list[0].constructor === types.Symbol && list[0].value === 'let*') {
-      var newEnv = new Env(env);
+      // format is (let* <list> <ast>)
+      var letEnv = new Env(env);
+      var bindings = list[1].value;
+      for (var i=0; i<bindings.length; i+=2) {
+        letEnv.set(bindings[i], EVAL(bindings[i+1], letEnv));
+      }
+      // interpret second param with the new env
+      return EVAL(list[2], letEnv);
     } else {
       var evaluated = eval_ast(ast, env);
       var fn = evaluated[0];
