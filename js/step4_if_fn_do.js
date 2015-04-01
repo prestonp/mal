@@ -74,6 +74,7 @@ var EVAL = function(ast, env) {
 };
 var PRINT = printer.pr_str;
 var rep = function(input) {
+  if ( input.trim() === 'exit') process.exit();
   return PRINT(EVAL(READ(input), repl_env), true);
 };
 
@@ -95,7 +96,6 @@ while(1) {
   try {
     console.log(rep(line));
   } catch(e) {
-    console.log(e);
     console.log(e.stack);
   }
 }

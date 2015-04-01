@@ -33,7 +33,7 @@ Env.prototype.find = function(key) {
 Env.prototype.get = function(key) {
   var env = this.find(key);
   if (env.constructor === types.Nil) {
-    throw new Error('Not found:', key.value);
+    throw new Error(key.value + ' is undefined');
   } else {
     return env.data[key.value];
   }
