@@ -31,6 +31,10 @@ var EVAL = function(ast, env) {
       }
       // interpret second param with the new env
       return EVAL(list[2], letEnv);
+    } else if (list[0].constructor === types.Symbol && list[0].value === 'do') {
+      var rest = new types.List(list.slice(1));
+      var rest_eval = eval_ast(rest, env);
+      return rest_eval[rest_eval.length-1];
     } else {
       var evaluated = eval_ast(ast, env);
       var fn = evaluated[0];
