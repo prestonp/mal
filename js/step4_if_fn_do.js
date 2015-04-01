@@ -7,11 +7,11 @@ var Env = require('./env');
 // base environment
 var repl_env = new Env(new types.Nil());
 
-// functions
-repl_env.set(new types.Symbol('+'), function(a, b) { return a+b; });
-repl_env.set(new types.Symbol('-'), function(a, b) { return a-b; });
-repl_env.set(new types.Symbol('*'), function(a, b) { return a*b; });
-repl_env.set(new types.Symbol('/'), function(a, b) { return parseInt(a/b); });
+var core = require('./core');
+
+for(key in core) {
+  repl_env.set(new types.Symbol(key), core[key]);
+}
 
 // constants
 repl_env.set(new types.Symbol('PI'), Math.PI);

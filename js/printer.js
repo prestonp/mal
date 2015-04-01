@@ -18,7 +18,6 @@ var pr_str = function(ast, print_readably) {
       return ast.value;
     case types.List:
       return '(' + ast.value.map(pr_str).join(' ') + ')';
-    
     default:
       return ast;
   }

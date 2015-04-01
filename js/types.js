@@ -26,10 +26,6 @@ var types = {
 
   Boolean: function(bool) {
     this.value = !!bool;
-  },
-
-  'Function': function(fn) {
-    this.value = fn;
   }
 };
 
