@@ -4,10 +4,11 @@
 
 Mal is a Clojure inspired Lisp interpreter.
 
-Mal is implemented in 28 different languages:
+Mal is implemented in 30 different languages:
 
 * Bash shell
 * C
+* C++
 * C#
 * Clojure
 * CoffeeScript
@@ -15,7 +16,8 @@ Mal is implemented in 28 different languages:
 * Go
 * Haskell
 * Java
-* Javascript ([Online Demo](http://kanaka.github.io/mal))
+* JavaScript ([Online Demo](http://kanaka.github.io/mal))
+* Julia
 * Lua
 * GNU Make
 * mal itself
@@ -88,6 +90,23 @@ make
 ./stepX_YYY
 ```
 
+### C++
+
+*The C++ implementation was created by [Stephen Thirlwall (sdt)](https://github.com/sdt)*
+
+The C++ implementation of mal requires g++-4.9 or clang++-3.5 and
+a readline compatible library to build. See the `cpp/README.md` for
+more details:
+
+```
+cd cpp
+make
+    # OR
+make CXX=clang++-3.5
+./stepX_YYY
+```
+
+
 ### C# ###
 
 The C# implementation of mal has been tested on Linux using the Mono
@@ -117,6 +136,8 @@ coffee ./stepX_YYY
 ```
 
 ### Forth
+
+*The Forth implementation was created by [Chris Houser (chouser)](https://github.com/chouser)*
 
 ```
 cd forth
@@ -161,12 +182,21 @@ mvn -quiet exec:java -Dexec.mainClass=mal.stepX_YYY
 mvn -quiet exec:java -Dexec.mainClass=mal.stepX_YYY -Dexec.args="CMDLINE_ARGS"
 ```
 
-### Javascript/Node
+### JavaScript/Node
 
 ```
 cd js
 npm update
 node stepX_YYY.js
+```
+
+### Julia
+
+The Julia implementation of mal has been tested with Julia 0.3.7.
+
+```
+cd julia
+julia stepX_YYY.jl
 ```
 
 ### Lua
@@ -201,6 +231,8 @@ make -f stepX_YYY.mk
 
 ### Nim 0.10.3
 
+*The Nim implementation was created by [Dennis Felsing (def-)](https://github.com/def-)*
+
 Running the Nim implementation of mal requires Nim's current devel branch
 (0.10.3) or later, and the nre library installed.
 
@@ -213,6 +245,8 @@ nimble build
 ```
 
 ### OCaml 4.01.0
+
+*The OCaml implementation was created by [Chris Houser (chouser)](https://github.com/chouser)*
 
 ```
 cd ocaml
@@ -338,6 +372,8 @@ scala -classpath target/scala*/classes stepX_YYY
 ```
 
 ### Swift
+
+*The Swift implementation was created by [Keith Rollin](https://github.com/keith-rollin)*
 
 The Swift implemenation of mal requires the Swift compiler (XCode) to
 build.
