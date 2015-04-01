@@ -13,6 +13,10 @@ var ns = {
   'list?': function(list) {
             return list && list.constructor === types.List;
            },
+
+  'empty?': function(list) {
+              return list && list.constructor === types.List && !list.value.length;
+            },
   'PI': Math.pi
 };
 
