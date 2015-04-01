@@ -35,6 +35,15 @@ var EVAL = function(ast, env) {
       var rest = new types.List(list.slice(1));
       var rest_eval = eval_ast(rest, env);
       return rest_eval[rest_eval.length-1];
+    } else if (list[0].constructor === types.Symbol && list[0].value === 'if') {
+      var condition = EVAL(list[1], env);
+      if (condition !== "nil" && condition !== false ) {
+        return EVAL(list[2], env);  // truthy
+      } else if (list[3]) {
+        return EVAL(list[3], env);  // falsy
+      } else {
+        return new types.Nil();     // missing else ast
+      }
     } else {
       var evaluated = eval_ast(ast, env);
       var fn = evaluated[0];
