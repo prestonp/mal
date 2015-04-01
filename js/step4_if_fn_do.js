@@ -44,6 +44,24 @@ var EVAL = function(ast, env) {
       } else {
         return new types.Nil();     // missing else ast
       }
+    } else if (list[0].constructor === types.Symbol && list[0].value === 'fn*') {
+      return function() {
+        var binds = [];
+
+        // parse bound parameters
+        if (list[1].value !== '[') {
+          throw new Error('Expected [ in function declaration');
+        }
+        var i = 2;
+        while(list[i].value !== ']')
+          binds.push(list[i++]);
+
+        var args = Array.prototype.slice.call(arguments);
+        var closure_env = new Env(env, binds, args);
+
+        // evaluate function body with new closure env
+        return EVAL(list[i+1], closure_env);
+      }
     } else {
       var evaluated = eval_ast(ast, env);
       var fn = evaluated[0];
@@ -78,5 +96,6 @@ while(1) {
     console.log(rep(line));
   } catch(e) {
     console.log(e);
+    console.log(e.stack);
   }
 }
