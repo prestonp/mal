@@ -6,17 +6,28 @@ var ns = {
   '*': function(a, b) { return a * b; },
   '/': function(a, b) { return parseInt(a / b); },
 
-  'list': function() {
-            return new types.List(Array.prototype.slice.call(arguments));
-          },
+  'list':
+  function() {
+    return new types.List(Array.prototype.slice.call(arguments));
+  },
 
-  'list?': function(list) {
-            return list && list.constructor === types.List;
-           },
+  'list?':
+  function(list) {
+    return list && list.constructor === types.List;
+  },
 
-  'empty?': function(list) {
-              return list && list.constructor === types.List && !list.value.length;
-            },
+  'empty?':
+  function(list) {
+    return list && list.constructor === types.List && !list.value.length;
+  },
+
+  'count':
+  function(list) {
+    if (!list || list.constructor !== types.List)
+      throw new Error('count expects a list');
+    return list.value.length;
+  },
+
   'PI': Math.pi
 };
 
