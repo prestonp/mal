@@ -35,15 +35,15 @@ var read_str = function(str) {
 var read_atom = function(reader) {
   var token = reader.next();
   if ( /^\d+$/.test(token) )
-    return new types.Number(token);
+    return parseInt(token);
   else if ( /^nil$/.test(token) )
-    return new types.Nil();
+    return null;
   else if ( /^true$/.test(token) )
-    return new types.Boolean(true);
+    return true;
   else if ( /^false$/.test(token) )
-    return new types.Boolean(false);
+    return false;
   else if ( token.charAt(0) === '"' )
-    return new types.String(token.slice(1, token.length-1));
+    return token.slice(1, token.length-1);
   else
     return new types.Symbol(token);
 };
@@ -72,7 +72,7 @@ var read_list = function(reader) {
     list.push(read_form(reader));
   }
   reader.next();
-  return new types.List(list);
+  return list;
 };
 
 // expose fns

@@ -1,5 +1,3 @@
-var types = require('./types');
-
 var Env = function(outer, binds, exprs) {
   this.data = {};
   this.outer = outer;
@@ -16,26 +14,26 @@ var Env = function(outer, binds, exprs) {
 };
 
 Env.prototype.set = function(key, val) {
-  this.data[key.value] = val;
+  this.data[key] = val;
   return val;
 };
 
 Env.prototype.find = function(key) {
-  if (this.data.hasOwnProperty(key.value)) {
+  if (this.data.hasOwnProperty(key)) {
     return this;
-  } else if (this.outer.constructor !== types.Nil) {
+  } else if (this.outer !== null) {
     return this.outer.find(key);
   } else {
-    return new types.Nil();
+    return null;
   }
 };
 
 Env.prototype.get = function(key) {
   var env = this.find(key);
-  if (env.constructor === types.Nil) {
-    throw new Error(key.value + ' is undefined');
+  if (env === null) {
+    throw new Error(key + ' is undefined');
   } else {
-    return env.data[key.value];
+    return env.data[key];
   }
 };
 
