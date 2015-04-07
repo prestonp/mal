@@ -43,7 +43,9 @@ var read_atom = function(reader) {
   else if ( /^false$/.test(token) )
     return false;
   else if ( token.charAt(0) === '"' )
-    return token.slice(1, token.length-1);
+    return token.slice(1, token.length-1)
+      .replace(/\\"/g, '"')
+      .replace(/\\n/g, '\n');
   else
     return new types.Symbol(token);
 };

@@ -1,4 +1,21 @@
 var types = require('./types');
+var printer = require('./printer');
+
+function _print(print, print_readably, delimiter) {
+  return function() {
+    var args = Array.prototype.slice.call(arguments);
+    console.log(args);
+    var output = args.map(function(arg) {
+      return printer.pr_str(arg, print_readably);
+    }).join(delimiter);
+    if (print) {
+      console.log(output);
+      return null;
+    } else {
+      return output;
+    }
+  }
+};
 
 var ns = {
   '+': function(a, b) { return a + b; },
@@ -49,7 +66,14 @@ var ns = {
     }
   },
 
-  'PI': Math.PI
+  'PI': Math.PI,
+
+  // string printing
+  'pr-str':   _print(false, true, ' '),
+  'str':      _print(false, false, ''),
+  'prn':      _print(true, true, ' '),
+  'println':  _print(true, false, ' ')
+
 };
 
 module.exports = ns;

@@ -10,9 +10,12 @@ var pr_str = function(ast, print_readably) {
   } else if (Array.isArray(ast)) {
     return '(' + ast.map(pr_str).join(' ') + ')';
   } else if (typeof ast === 'string') {
-    return print_readably ?
-      ast.replace(/\\"/g, '\"')
-         .replace(/\\n/g, '\n') :
+    // console.log('wtf', ast, print_readably);
+    // (list 1 2 "list") is getting wrong val for print_readably
+    return print_readably ? '"' +
+      ast.replace(/\\/g, '\\\\')
+         .replace(/"/g, '\\"')
+         .replace(/\n/g, '\\n') + '"' :
       ast;
   } else {
     return ast.toString();
