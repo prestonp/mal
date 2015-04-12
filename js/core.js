@@ -4,7 +4,6 @@ var printer = require('./printer');
 function _print(print, print_readably, delimiter) {
   return function() {
     var args = Array.prototype.slice.call(arguments);
-    console.log(args);
     var output = args.map(function(arg) {
       return printer.pr_str(arg, print_readably);
     }).join(delimiter);

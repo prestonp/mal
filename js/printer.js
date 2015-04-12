@@ -8,10 +8,10 @@ var pr_str = function(ast, print_readably) {
   } else if (ast === null) {
     return 'nil';
   } else if (Array.isArray(ast)) {
-    return '(' + ast.map(pr_str).join(' ') + ')';
+    return '(' + ast.map(function(sub_ast) {
+      return pr_str(sub_ast, print_readably);
+    }).join(' ') + ')';
   } else if (typeof ast === 'string') {
-    // console.log('wtf', ast, print_readably);
-    // (list 1 2 "list") is getting wrong val for print_readably
     return print_readably ? '"' +
       ast.replace(/\\/g, '\\\\')
          .replace(/"/g, '\\"')
