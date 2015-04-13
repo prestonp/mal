@@ -5,11 +5,14 @@ var Env = function(outer, binds, exprs) {
   binds = binds || [];
   exprs = exprs || [];
 
-  if (binds.length !== exprs.length)
-    throw new Error('env binds and exprs must have matching lengths');
-
   for (var i = 0; i < binds.length; i++) {
-    this.set(binds[i], exprs[i]);
+    if ( binds [i] === '&') {
+      // variadic functions
+      this.set(binds[i+1], exprs.slice(i));
+      break;
+    } else {
+      this.set(binds[i], exprs[i]);
+    }
   }
 };
 
