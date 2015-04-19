@@ -34,11 +34,11 @@ var EVAL = function(ast, env) {
       } else if (ast[0].value === 'if') {
         var condition = EVAL(ast[1], env);
         if (condition !== null && condition !== false ) {
-          return EVAL(ast[2], env);  // truthy
+          ast = ast[2];  // truthy
         } else if (ast[3]) {
-          return EVAL(ast[3], env);  // falsy
+          ast = ast[3];  // falsy
         } else {
-          return null;               // missing else ast
+          return null;   // missing else ast
         }
       } else if (ast[0].value === 'fn*') {
         return function() {
