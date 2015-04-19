@@ -3,7 +3,7 @@ var types = require('./types');
 var pr_str = function(ast, print_readably) {
   if (ast instanceof types.Symbol) {
     return ast.value;
-  } else if (typeof ast === 'function')  {
+  } else if (typeof ast === 'function' || ast instanceof types.MalFn)  {
     return '#<function>';
   } else if (ast === null) {
     return 'nil';

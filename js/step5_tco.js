@@ -71,7 +71,13 @@ var EVAL = function(ast, env) {
         var evaluated = eval_ast(ast, env);
         var fn = evaluated[0];
         var args = evaluated.slice(1);
-        return fn.apply(null, args);
+
+        if (fn instanceof types.MalFn) {
+          ast = fn.ast[0];
+          env = new Env(fn.env, fn.params, args);
+        } else {
+          return fn.apply(fn, args);
+        }
       }
     } else {
       return eval_ast(ast, env);
