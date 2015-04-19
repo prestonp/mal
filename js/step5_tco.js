@@ -26,14 +26,11 @@ var EVAL = function(ast, env) {
         for (var i=0; i<bindings.length; i+=2) {
           letEnv.set(bindings[i].value, EVAL(bindings[i+1], letEnv));
         }
-
-        // TCO
         env = letEnv;
         ast = ast[2];
       } else if (ast[0].value === 'do') {
-        var rest = ast.slice(1);
-        var rest_eval = eval_ast(rest, env);
-        return rest_eval[rest_eval.length-1];
+        var rest = ast.slice(1, ast.length-1);
+        ast = eval_ast(rest, env).slice(-1);
       } else if (ast[0].value === 'if') {
         var condition = EVAL(ast[1], env);
         if (condition !== null && condition !== false ) {
