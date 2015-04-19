@@ -1,5 +1,7 @@
+var fs = require('fs');
 var types = require('./types');
 var printer = require('./printer');
+var reader = require('./reader');
 
 function _print(print, print_readably, delimiter) {
   return function() {
@@ -71,7 +73,13 @@ var ns = {
   'pr-str':   _print(false, true, ' '),
   'str':      _print(false, false, ''),
   'prn':      _print(true, true, ' '),
-  'println':  _print(true, false, ' ')
+  'println':  _print(true, false, ' '),
+
+  'read-str': reader.read_str,
+  'slurp': function(filename) {
+    var contents = fs.readFileSync(filename, { encoding: 'utf8' });
+    return contents;
+  }
 
 };
 
