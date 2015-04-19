@@ -41,26 +41,32 @@ var EVAL = function(ast, env) {
           return null;   // missing else ast
         }
       } else if (ast[0].value === 'fn*') {
-        return function() {
-          var binds = [];
-          // parse bound parameters
+        var params = [];
 
-          if (Array.isArray(ast[1])) { // (list) -> bindings
-            binds = ast[1].map(function(binding) { return binding.value; });
-          } else if (ast[1].value !== '[') {
-              throw new Error('Expected [ in function declaration');
-          } else {
-            var i = 2;
-            while(ast[i].value !== ']') {
-              binds.push(ast[i++].value);
-            }
+        // parse params
+        if (Array.isArray(ast[1])) {
+          // specified params as a vector
+          params = ast[1].map(function(param) {
+            return param.value;
+          });
+        } else if (ast[1].value !== '[') {
+          throw new Error('Expected [ in function declaration');
+        } else {
+          // specified as a list
+          var i = 2;
+          while(ast[i].value !== ']') {
+            params.push(ast[i++].value);
           }
-          var args = Array.prototype.slice.call(arguments);
-          var closure_env = new Env(env, binds, args);
-
-          // evaluate function body with new closure env
-          return EVAL(ast[ast.length-1], closure_env);
         }
+
+        var fn = function() {
+          var args = Array.prototype.slice.call(arguments);
+          var closure_env = new Env(env, params, args);
+          return EVAL(ast.slice(-1), closure_env);
+        }
+
+        // new mal function representation for tco
+        return new types.MalFn(ast.slice(-1), params, env, fn);
       } else {
         var evaluated = eval_ast(ast, env);
         var fn = evaluated[0];

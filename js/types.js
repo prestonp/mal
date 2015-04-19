@@ -26,6 +26,13 @@ var types = {
 
   Boolean: function(bool) {
     this.value = !!bool;
+  },
+
+  MalFn: function(ast, params, env, fn) {
+    this.ast = ast;
+    this.params = params;
+    this.env = env;
+    this.fn = fn;
   }
 };
 
