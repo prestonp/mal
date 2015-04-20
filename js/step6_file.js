@@ -13,6 +13,10 @@ for(key in core) {
   repl_env.set(key, core[key]);
 }
 
+repl_env.set('eval', function(ast) {
+  return EVAL(ast, repl_env);
+});
+
 var READ = reader.read_str;
 var EVAL = function(ast, env) {
   while(true) {
@@ -29,8 +33,8 @@ var EVAL = function(ast, env) {
         env = letEnv;
         ast = ast[2];
       } else if (ast[0].value === 'do') {
-        var rest = ast.slice(1, ast.length-1);
-        ast = eval_ast(rest, env).slice(-1);
+        eval_ast(ast.slice(1, -1), env);
+        ast = ast.slice(-1);
       } else if (ast[0].value === 'if') {
         var condition = EVAL(ast[1], env);
         if (condition !== null && condition !== false ) {
@@ -75,8 +79,10 @@ var EVAL = function(ast, env) {
         if (fn instanceof types.MalFn) {
           ast = fn.ast[0];
           env = new Env(fn.env, fn.params, args);
-        } else {
+        } else if (typeof fn === 'function'){
           return fn.apply(fn, args);
+        } else {
+          return fn;
         }
       }
     } else {
@@ -105,6 +111,9 @@ var eval_ast = function(ast, env) {
 
 // implement not in mal
 rep('(def! not (fn* (a) (if a false true)))');
+
+// implement load-file in mal
+rep('(def! load-file (fn* (f) (eval (read-string (str "(do " (slurp f) ")") ) )))')
 
 while(1) {
   var line = readline.readline('user> ');

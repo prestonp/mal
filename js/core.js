@@ -75,7 +75,7 @@ var ns = {
   'prn':      _print(true, true, ' '),
   'println':  _print(true, false, ' '),
 
-  'read-str': reader.read_str,
+  'read-string': reader.read_str,
   'slurp': function(filename) {
     var contents = fs.readFileSync(filename, { encoding: 'utf8' });
     return contents;
