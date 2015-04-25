@@ -115,6 +115,13 @@ rep('(def! not (fn* (a) (if a false true)))');
 // implement load-file in mal
 rep('(def! load-file (fn* (f) (eval (read-string (str "(do " (slurp f) ")") ) )))')
 
+// run commandline files
+var file = process.argv.slice(2);
+if ( file && file[0] ) {
+  console.log(rep('(load-file "$1")'.replace('$1', file[0]))); 
+  process.exit();
+}
+
 while(1) {
   var line = readline.readline('user> ');
   try {
@@ -123,3 +130,5 @@ while(1) {
     console.log(e.stack);
   }
 }
+
+

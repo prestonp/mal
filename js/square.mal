@@ -1,0 +1,2 @@
+(def! square (fn* [a] (* a a)))
+(square 9)
