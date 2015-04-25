@@ -116,9 +116,10 @@ rep('(def! not (fn* (a) (if a false true)))');
 rep('(def! load-file (fn* (f) (eval (read-string (str "(do " (slurp f) ")") ) )))')
 
 // run commandline files
-var file = process.argv.slice(2);
-if ( file && file[0] ) {
-  console.log(rep('(load-file "$1")'.replace('$1', file[0]))); 
+var args = process.argv;
+if ( args && args.length > 2 ) {
+  repl_env.set('*ARGV*', args.slice(3));
+  rep('(load-file "$1")'.replace('$1', args[2])); 
   process.exit();
 }
 

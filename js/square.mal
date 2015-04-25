@@ -1,2 +1,3 @@
 (def! square (fn* [a] (* a a)))
-(square 9)
+(println (square 9))
+(println "args" *ARGV*)
