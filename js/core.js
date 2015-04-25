@@ -79,6 +79,19 @@ var ns = {
   'slurp': function(filename) {
     var contents = fs.readFileSync(filename, { encoding: 'utf8' });
     return contents;
+  },
+
+  'cons': function(pre, list) {
+    return [pre].concat(list);
+  },
+
+  'concat': function() {
+    var args = Array.prototype.slice.call(arguments);
+    if ( args.length && Array.isArray(args[0]) ) {
+      return args[0].concat.apply(args[0], args.slice(1));
+    } else {
+      return [];
+    }
   }
 
 };
