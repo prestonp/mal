@@ -19,6 +19,18 @@ var read_form = function(reader) {
       throw new Error('unexpected )');
     case '(':
       return read_list(reader);
+    case '\'':
+      reader.next();
+      return [new types.Symbol('quote'), read_form(reader)];
+    case '`':
+      reader.next();
+      return [new types.Symbol('quasiquote'), read_form(reader)];
+    case '~':
+      reader.next();
+      return [new types.Symbol('unquote'), read_form(reader)];
+    case '~@':
+      reader.next();
+      return [new types.Symbol('splice-unquote'), read_form(reader)];
     default:
       return read_atom(reader);
   }

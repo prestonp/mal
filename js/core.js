@@ -34,6 +34,8 @@ var ns = {
         matches = matches && ns['='](a[i], b[i]);
       }
       return matches;
+    } else if (a instanceof types.Symbol && b instanceof types.Symbol) {
+      return a.value === b.value;
     } else {
       return a === b;
     }

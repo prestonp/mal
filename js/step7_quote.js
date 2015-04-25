@@ -18,12 +18,12 @@ repl_env.set('eval', function(ast) {
 });
 
 function quasiquote(ast) {
-  if ( (core['is_pair?'])(ast) === false) {
+  if (!(core['is_pair?'])(ast)) {
     return [new types.Symbol('quote'), ast];
   } else if (ast[0].value === 'unquote') {
     return ast[1];
-  } else if ( (core['is_pair?'])(ast) === true && ast[0].value === 'splice-unquote') {
-    return [new types.Symbol('concat'), ast[1], quasiquote(ast.slice(2))];
+  } else if ( (core['is_pair?'])(ast[0]) && ast[0][0].value === 'splice-unquote') {
+    return [new types.Symbol('concat'), ast[0][1], quasiquote(ast.slice(1))];
   } else {
     return [new types.Symbol('cons'), quasiquote(ast[0]), quasiquote(ast.slice(1))];
   }
