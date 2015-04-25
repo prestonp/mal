@@ -17,6 +17,18 @@ repl_env.set('eval', function(ast) {
   return EVAL(ast, repl_env);
 });
 
+function quasiquote(ast) {
+  if ( (core['is_pair?'])(ast) === false) {
+    return [new types.Symbol('quote'), ast];
+  } else if (ast[0].value === 'unquote') {
+    return ast[1];
+  } else if ( (core['is_pair?'])(ast) === true && ast[0].value === 'splice-unquote') {
+    return [new types.Symbol('concat'), ast[1], quasiquote(ast.slice(2))];
+  } else {
+    return [new types.Symbol('cons'), quasiquote(ast[0]), quasiquote(ast.slice(1))];
+  }
+}
+
 var READ = reader.read_str;
 var EVAL = function(ast, env) {
   while(true) {
@@ -73,6 +85,8 @@ var EVAL = function(ast, env) {
         return new types.MalFn(ast.slice(-1), params, env, fn);
       } else if (ast[0].value === 'quote') {
         return ast[1];
+      } else if (ast[0].value === 'quasiquote') {
+        ast = quasiquote(ast[1]);
       } else {
         var evaluated = eval_ast(ast, env);
         var fn = evaluated[0];

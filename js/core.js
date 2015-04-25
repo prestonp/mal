@@ -92,8 +92,11 @@ var ns = {
     } else {
       return [];
     }
-  }
+  },
 
+  'is_pair?': function(val) {
+    return Array.isArray(val) && !!val.length;
+  }
 };
 
 module.exports = ns;
