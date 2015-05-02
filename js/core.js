@@ -15,8 +15,8 @@ function _print(print, print_readably, delimiter) {
     } else {
       return output;
     }
-  }
-};
+  };
+}
 
 var ns = {
   '+': function(a, b) { return a + b; },

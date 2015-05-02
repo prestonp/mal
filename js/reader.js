@@ -48,6 +48,8 @@ var read_atom = function(reader) {
   var token = reader.next();
   if ( /^\d+$/.test(token) )
     return parseInt(token);
+  else if ( /^:/.test(token) )
+    return token;
   else if ( /^nil$/.test(token) )
     return null;
   else if ( /^true$/.test(token) )
