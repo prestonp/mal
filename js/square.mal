@@ -1,3 +1,6 @@
-(def! square (fn* [a] (* a a)))
+; define function
+(def! square (fn* (a) (* a a)))
+
+; test it out!!!
 (println (square 9))
 (println "args" *ARGV*)

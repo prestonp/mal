@@ -76,7 +76,7 @@ var tokenize = function(str) {
   var tokens = [];
   do {
     match = malRegex.exec(str);
-    if (match[1].charAt(0) === ';') return tokens; // ignore tokens after comment token
+    if (match[1].charAt(0) === ';') continue; // ignore tokens after comment token
     if (match[1]) tokens.push(match[1]);
   } while(match[1]);
 
