@@ -17,9 +17,11 @@ var read_form = function(reader) {
   switch (reader.peek()) {
     case ')':
     case ']':
-      throw new Error('unexpected end of list or vector');
+    case '}':
+      throw new Error('unexpected end of list, vector or hash-map');
     case '(':
     case '[':
+    case '{':
       return read_list(reader);
     case '\'':
       reader.next();
@@ -39,7 +41,9 @@ var read_form = function(reader) {
 };
 
 var read_str = function(str) {
-  var reader = new Reader(tokenize(str));
+  var tokens = tokenize(str);
+  if (!tokens.length) throw new Error('#COMMENT');
+  var reader = new Reader(tokens);
   return read_form(reader);
 };
 
@@ -72,6 +76,7 @@ var tokenize = function(str) {
   var tokens = [];
   do {
     match = malRegex.exec(str);
+    if (match[1].charAt(0) === ';') return tokens; // ignore tokens after comment token
     if (match[1]) tokens.push(match[1]);
   } while(match[1]);
 
@@ -79,27 +84,39 @@ var tokenize = function(str) {
 };
 
 var delimiters = {
-  '(': ')',
-  '[': ']'
+  '(': ')', // list
+  '[': ']', // vector
+  '{': '}'  // hash-map
 };
 
 var read_list = function(reader) {
   var token = reader.next();
-  var list = [];
+  var list;
 
-  if ( !(token in delimiters) )
-    throw new Error('expected ' + token);
-
-  if ( token === '[' )
-    list = new types.Vector();
+  switch(token) {
+    case '(':
+      list = [];
+      break;
+    case '[':
+      list = new types.Vector();
+      break;
+    case '{':
+      //todo
+      list = {};
+      break;
+    default:
+      throw new Error('expected list, vector or hash-map');
+  }
 
   var closeToken = delimiters[token];
   while( (token = reader.peek()) !== closeToken) {
     if (!token) {
       throw new Error('expected ' + delimiters[token] + ', got eof');
     }
-
-    list.push(read_form(reader));
+    if ( Array.isArray(list) || list instanceof types.Vector )
+      list.push(read_form(reader));
+    else
+      list[read_form(reader)] = read_form(reader);
   }
   reader.next();
   return list;

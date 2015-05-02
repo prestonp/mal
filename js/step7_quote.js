@@ -123,6 +123,17 @@ var eval_ast = function(ast, env) {
     return ast.map(function(sub_ast){
       return EVAL(sub_ast, env);
     });
+  } else if (ast instanceof types.Vector) {
+    ast.value = ast.value.map(function(sub_ast){
+      return EVAL(sub_ast, env);
+    });
+    return ast;
+  } else if (typeof ast === 'object') {
+    var result = Object.keys(ast).reduce(function(obj, key) {
+      obj[key] = EVAL(ast[key], env);
+      return obj;
+    }, {});
+    return result;
   } else {
     return ast;
   }
@@ -132,7 +143,7 @@ var eval_ast = function(ast, env) {
 rep('(def! not (fn* (a) (if a false true)))');
 
 // implement load-file in mal
-rep('(def! load-file (fn* (f) (eval (read-string (str "(do " (slurp f) ")") ) )))')
+rep('(def! load-file (fn* (f) (eval (read-string (str "(do " (slurp f) ")") ) )))');
 
 // run commandline files
 var args = process.argv;
@@ -147,6 +158,6 @@ while(1) {
   try {
     console.log(rep(line));
   } catch(e) {
-    console.log(e.stack);
+    if (e.message !== '#COMMENT') console.log(e.stack);
   }
 }

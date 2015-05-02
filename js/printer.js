@@ -24,6 +24,11 @@ var pr_str = function(ast, print_readably) {
          .replace(/"/g, '\\"')
          .replace(/\n/g, '\\n') + '"' :
       ast;
+  } else if (typeof ast === 'object') {
+    var contents = Object.keys(ast).map(function(key) {
+      return pr_str(key, print_readably) + ' ' + pr_str(ast[key], print_readably);
+    });
+    return '{' + contents.join(' ') + '}';
   } else {
     return ast.toString();
   }
