@@ -11,6 +11,10 @@ var pr_str = function(ast, print_readably) {
     return '(' + ast.map(function(sub_ast) {
       return pr_str(sub_ast, print_readably);
     }).join(' ') + ')';
+  } else if (ast instanceof types.Vector) {
+    return '[' + ast.value.map(function(sub_ast) {
+      return pr_str(sub_ast, print_readably);
+    }).join(' ') + ']';
   } else if (typeof ast === 'string' && /^:/.test(ast)) {
     return ast; // keyword
   } else if (typeof ast === 'string') {

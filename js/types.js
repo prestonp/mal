@@ -8,6 +8,10 @@ var types = {
     this.value = list;
   },
 
+  Vector: function() {
+    this.value = [];
+  },
+
   Number: function(num) {
     this.value = parseInt(num);
   },
@@ -34,6 +38,10 @@ var types = {
     this.env = env;
     this.fn = fn;
   }
+};
+
+types.Vector.prototype.push = function(item) {
+  return this.value.push(item);
 };
 
 module.exports = types;

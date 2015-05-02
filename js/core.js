@@ -84,13 +84,25 @@ var ns = {
   },
 
   'cons': function(pre, list) {
-    return [pre].concat(list);
+    return [pre].concat(list instanceof types.Vector ? list.value : list);
   },
 
   'concat': function() {
     var args = Array.prototype.slice.call(arguments);
-    if ( args.length && Array.isArray(args[0]) ) {
-      return args[0].concat.apply(args[0], args.slice(1));
+
+    if ( args.length ){
+      // convert arguments to lists
+      var head = args[0];
+      var rest = args.slice(1).map(function(list) {
+        return list instanceof types.Vector ? list.value : list;
+      });
+      if (Array.isArray(head)) {
+        return head.concat.apply(head, rest);
+      } else if (head instanceof types.Vector) {
+        return head.value.concat.apply(head.value, rest);
+      } else {
+        throw new Error('concat requires array or vector');
+      }
     } else {
       return [];
     }

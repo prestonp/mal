@@ -18,6 +18,9 @@ repl_env.set('eval', function(ast) {
 });
 
 function quasiquote(ast) {
+  if (ast instanceof types.Vector)
+    ast = ast.value;
+
   if (!(core['is_pair?'])(ast)) {
     return [new types.Symbol('quote'), ast];
   } else if (ast[0].value === 'unquote') {
@@ -32,7 +35,7 @@ function quasiquote(ast) {
 var READ = reader.read_str;
 var EVAL = function(ast, env) {
   while(true) {
-    if ( Array.isArray(ast) ) {
+    if ( Array.isArray(ast) && ast.length ) {
       if (ast[0].value === 'def!') {
         return env.set(ast[1].value, EVAL(ast[2], env));
       } else if (ast[0].value === 'let*') {

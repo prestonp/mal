@@ -16,8 +16,10 @@ Reader.prototype.peek = function() {
 var read_form = function(reader) {
   switch (reader.peek()) {
     case ')':
-      throw new Error('unexpected )');
+    case ']':
+      throw new Error('unexpected end of list or vector');
     case '(':
+    case '[':
       return read_list(reader);
     case '\'':
       reader.next();
@@ -76,15 +78,27 @@ var tokenize = function(str) {
   return tokens;
 };
 
+var delimiters = {
+  '(': ')',
+  '[': ']'
+};
+
 var read_list = function(reader) {
   var token = reader.next();
   var list = [];
-  if ( token !== '(' )
-    throw new Error('expected (');
-  while( (token = reader.peek()) !== ')') {
+
+  if ( !(token in delimiters) )
+    throw new Error('expected ' + token);
+
+  if ( token === '[' )
+    list = new types.Vector();
+
+  var closeToken = delimiters[token];
+  while( (token = reader.peek()) !== closeToken) {
     if (!token) {
-      throw new Error('expected ), got eof');
+      throw new Error('expected ' + delimiters[token] + ', got eof');
     }
+
     list.push(read_form(reader));
   }
   reader.next();
