@@ -1,3 +1,18 @@
+# Hi there!
+
+This fork hosts my implementation of mal in javascript. I removed the original js implementation
+and went step-by-step through the process.
+
+Note: some of the earlier tests have several failing test cases. This is because
+I completely changed the type representation somewhere around step 4 or 5.
+
+:blush:
+
+- preston
+
+===
+
+
 # mal - Make a Lisp
 
 ## Description
