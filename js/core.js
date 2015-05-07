@@ -136,6 +136,17 @@ var ns = {
   'throw': function(val) {
     console.log(ns['pr-str'](val));
     throw val;
+  },
+
+  'apply': function(malFn) {
+    var args = Array.prototype.slice.call(arguments);
+    args = ns.concat.apply(args, args.slice(1)) ;
+    return malFn.fn.apply(null, args);
+  },
+
+  'map': function(malFn, list) {
+    if (list instanceof types.Vector) list = list.value;
+    return list.map(malFn.fn);
   }
 };
 
