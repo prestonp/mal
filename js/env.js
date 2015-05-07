@@ -34,7 +34,7 @@ Env.prototype.find = function(key) {
 Env.prototype.get = function(key) {
   var env = this.find(key);
   if (env === null) {
-    throw new Error(key + ' is undefined');
+    throw new Error(['\'', key, '\'', ' not found'].join(''));
   } else {
     return env.data[key];
   }

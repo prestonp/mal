@@ -34,6 +34,10 @@ var types = {
     this.env = env;
     this.fn = fn;
     this.is_macro = is_macro || false;
+  },
+
+  Exception: function(err) {
+    this.value = err;
   }
 };
 

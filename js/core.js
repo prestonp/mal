@@ -131,6 +131,11 @@ var ns = {
     if (list instanceof types.Vector)
       list = list.value;
     return list.slice(1);
+  },
+
+  'throw': function(val) {
+    console.log(ns['pr-str'](val));
+    throw val;
   }
 };
 
