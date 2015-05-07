@@ -110,6 +110,21 @@ var ns = {
 
   'is_pair?': function(val) {
     return Array.isArray(val) && !!val.length;
+  },
+
+  'nth': function(list, idx) {
+    if (idx < 0 || idx >= list.length)
+      throw new Error('index out of bounds');
+    return list[idx];
+  },
+
+  'first': function(list) {
+    if (!list || !list.length) return null;
+    return list[0];
+  },
+
+  'rest': function(list) {
+    return list.slice(1);
   }
 };
 
