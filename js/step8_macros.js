@@ -159,6 +159,8 @@ var eval_ast = function(ast, env) {
       return EVAL(sub_ast, env);
     });
     return ast;
+  } else if (ast === null) {
+    return null;
   } else if (typeof ast === 'object') {
     var result = Object.keys(ast).reduce(function(obj, key) {
       obj[key] = EVAL(ast[key], env);
@@ -175,6 +177,12 @@ rep('(def! not (fn* (a) (if a false true)))');
 
 // implement load-file in mal
 rep('(def! load-file (fn* (f) (eval (read-string (str "(do " (slurp f) ")") ) )))');
+
+// implement cond
+rep("(defmacro! cond (fn* (& xs) (if (> (count xs) 0) (list 'if (first xs) (if (> (count xs) 1) (nth xs 1) (throw \"odd number of forms to cond\")) (cons 'cond (rest (rest xs)))))))");
+
+// implement or
+rep("(defmacro! or (fn* (& xs) (if (empty? xs) nil (if (= 1 (count xs)) (first xs) `(let* (or_FIXME ~(first xs)) (if or_FIXME or_FIXME (or ~@(rest xs))))))))");
 
 // run commandline files
 var args = process.argv;
