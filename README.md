@@ -4,11 +4,11 @@ This fork hosts my implementation of mal in javascript. I removed the original j
 and went step-by-step through the process.
 
 Note: some of the earlier tests have several failing test cases. This is because
-I completely changed the type representation somewhere around step 4 or 5.
+I completely changed the data type representations somewhere around step 4 or 5.
 
 :blush:
 
-- preston
+`-` preston
 
 ===
 
