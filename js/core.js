@@ -113,17 +113,23 @@ var ns = {
   },
 
   'nth': function(list, idx) {
+    if (list instanceof types.Vector)
+      list = list.value;
     if (idx < 0 || idx >= list.length)
       throw new Error('index out of bounds');
     return list[idx];
   },
 
   'first': function(list) {
+    if (list instanceof types.Vector)
+      list = list.value;
     if (!list || !list.length) return null;
     return list[0];
   },
 
   'rest': function(list) {
+    if (list instanceof types.Vector)
+      list = list.value;
     return list.slice(1);
   }
 };

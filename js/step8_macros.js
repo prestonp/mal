@@ -73,6 +73,8 @@ var EVAL = function(ast, env) {
         // format is (let* <list> <ast>)
         var letEnv = new Env(env);
         var bindings = ast[1];
+        if (bindings instanceof types.Vector)
+          bindings = bindings.value;
         for (var i=0; i<bindings.length; i+=2) {
           letEnv.set(bindings[i].value, EVAL(bindings[i+1], letEnv));
         }
