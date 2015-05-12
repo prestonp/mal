@@ -171,6 +171,14 @@ var ns = {
 
   'symbol': function(val) {
     return new types.Symbol(val);
+  },
+
+  'keyword?': function(val) {
+    return typeof val === 'string' && /^:/.test(val);
+  },
+
+  'keyword': function(val) {
+    return ':' + val;
   }
 };
 
