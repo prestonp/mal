@@ -206,6 +206,29 @@ var ns = {
       map.value[args[i]] = args[i+1];
     }
     return map;
+  },
+
+  'assoc': function() {
+    // Type checking
+    var args = Array.prototype.slice.call(arguments);
+    var oldMap = args[0];
+    if (!(oldMap instanceof types.HashMap))  throw new Error('assoc requires a map to associate');
+    args = args.slice(1);
+    if (args.length % 2 === 1) throw new Error('assoc requires pairs of key/vals');
+
+    // Clone map... assoc is immutable
+    var map = new types.HashMap();
+    map.value = Object.keys(oldMap.value).reduce(function(map, key) {
+      map[key] = oldMap.value[key];
+      return map;
+    }, {});
+
+    // Associate key/val pairs
+    for (var i=0, len=args.length; i<len; i+=2) {
+      map.value[args[i]] = args[i+1];
+    }
+
+    return map;
   }
 };
 
