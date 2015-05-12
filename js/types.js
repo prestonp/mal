@@ -4,8 +4,8 @@ var types = {
     this.value = symbol;
   },
 
-  Vector: function() {
-    this.value = [];
+  Vector: function(values) {
+    this.value = Array.isArray(values) ? values : [];
   },
 
   Number: function(num) {

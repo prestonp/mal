@@ -179,6 +179,19 @@ var ns = {
 
   'keyword': function(val) {
     return ':' + val;
+  },
+
+  'sequential?': function(val) {
+    return Array.isArray(val) || val instanceof types.Vector;
+  },
+
+  'vector?': function(val) {
+    return val instanceof types.Vector;
+  },
+
+  'vector': function() {
+    var args = Array.prototype.slice.call(arguments);
+    return new types.Vector(args);
   }
 };
 
