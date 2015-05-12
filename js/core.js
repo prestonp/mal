@@ -238,6 +238,20 @@ var ns = {
   'get': function(map, key) {
     if (!(map instanceof types.HashMap)) return null;
     return map.value[key] || null;
+  },
+
+  'contains?': function(map, key) {
+    return key in map.value;
+  },
+
+  'keys': function(map) {
+    return Object.keys(map.value);
+  },
+
+  'vals': function(map) {
+    return Object.keys(map.value).map(function(key) {
+      return map.value[key];
+    });
   }
 };
 
