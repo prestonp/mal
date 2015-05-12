@@ -229,6 +229,15 @@ var ns = {
     }
 
     return map;
+  },
+
+  'dissoc': function() {
+    throw new Error('todo');
+  },
+
+  'get': function(map, key) {
+    if (!(map instanceof types.HashMap)) return null;
+    return map.value[key] || null;
   }
 };
 
