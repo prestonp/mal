@@ -24,7 +24,8 @@ var pr_str = function(ast, print_readably) {
          .replace(/"/g, '\\"')
          .replace(/\n/g, '\\n') + '"' :
       ast;
-  } else if (typeof ast === 'object') {
+  } else if (ast instanceof types.HashMap) {
+    ast = ast.value;
     var contents = Object.keys(ast).map(function(key) {
       return pr_str(key, print_readably) + ' ' + pr_str(ast[key], print_readably);
     });

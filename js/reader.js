@@ -101,8 +101,7 @@ var read_list = function(reader) {
       list = new types.Vector();
       break;
     case '{':
-      //todo
-      list = {};
+      list = new types.HashMap();
       break;
     default:
       throw new Error('expected list, vector or hash-map');
@@ -116,7 +115,7 @@ var read_list = function(reader) {
     if ( Array.isArray(list) || list instanceof types.Vector )
       list.push(read_form(reader));
     else
-      list[read_form(reader)] = read_form(reader);
+      list.value[read_form(reader)] = read_form(reader);
   }
   reader.next();
   return list;

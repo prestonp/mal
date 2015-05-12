@@ -178,9 +178,10 @@ var eval_ast = function(ast, env) {
     return ast;
   } else if (ast === null) {
     return null;
-  } else if (typeof ast === 'object') {
-    var result = Object.keys(ast).reduce(function(obj, key) {
-      obj[key] = EVAL(ast[key], env);
+  } else if (ast instanceof types.HashMap) {
+    var result = new types.HashMap();
+    result.value = Object.keys(ast.value).reduce(function(obj, key) {
+      obj[key] = EVAL(ast.value[key], env);
       return obj;
     }, {});
     return result;

@@ -1,4 +1,7 @@
 var types = {
+  HashMap: function() {
+    this.value = {};
+  },
 
   Symbol: function(symbol) {
     this.value = symbol;

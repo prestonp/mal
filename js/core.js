@@ -192,6 +192,10 @@ var ns = {
   'vector': function() {
     var args = Array.prototype.slice.call(arguments);
     return new types.Vector(args);
+  },
+
+  'map?': function(val) {
+    return val instanceof types.HashMap;
   }
 };
 
