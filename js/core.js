@@ -196,6 +196,16 @@ var ns = {
 
   'map?': function(val) {
     return val instanceof types.HashMap;
+  },
+
+  'hash-map': function() {
+    var args = Array.prototype.slice.call(arguments);
+    if (args.length % 2 === 1) throw new Error('hash-map requires even number of args');
+    var map = new types.HashMap();
+    for (var i=0, len=args.length; i<len; i+=2) {
+      map.value[args[i]] = args[i+1];
+    }
+    return map;
   }
 };
 
