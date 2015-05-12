@@ -208,20 +208,25 @@ var ns = {
     return map;
   },
 
-  'assoc': function() {
-    // Type checking
-    var args = Array.prototype.slice.call(arguments);
-    var oldMap = args[0];
-    if (!(oldMap instanceof types.HashMap))  throw new Error('assoc requires a map to associate');
-    args = args.slice(1);
-    if (args.length % 2 === 1) throw new Error('assoc requires pairs of key/vals');
-
-    // Clone map... assoc is immutable
+  'cloneMap': function(oldMap) {
     var map = new types.HashMap();
     map.value = Object.keys(oldMap.value).reduce(function(map, key) {
       map[key] = oldMap.value[key];
       return map;
     }, {});
+    return map;
+  },
+
+  'assoc': function() {
+    // Type checking
+    var args = Array.prototype.slice.call(arguments);
+    var oldMap = args[0];
+    if (!(oldMap instanceof types.HashMap)) throw new Error('assoc requires a map to associate');
+    args = args.slice(1);
+    if (args.length % 2 === 1) throw new Error('assoc requires pairs of key/vals');
+
+    // Clone map... assoc is immutable
+    var map = ns.cloneMap(oldMap);
 
     // Associate key/val pairs
     for (var i=0, len=args.length; i<len; i+=2) {
@@ -232,7 +237,17 @@ var ns = {
   },
 
   'dissoc': function() {
-    throw new Error('todo');
+    var args = Array.prototype.slice.call(arguments);
+    var oldMap = args[0];
+    if (!(oldMap instanceof types.HashMap)) throw new Error('dissoc requires a map to dissociate');
+    var keys = args.slice(1);
+    var map = ns.cloneMap(oldMap);
+
+    keys.forEach(function(key) {
+      delete map.value[key];
+    });
+
+    return map;
   },
 
   'get': function(map, key) {
