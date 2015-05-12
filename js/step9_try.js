@@ -118,21 +118,19 @@ var EVAL = function(ast, env) {
           params = ast[1].map(function(param) {
             return param.value;
           });
-        } else if (ast[1].value !== '[') {
-          throw new Error('Expected [ in function declaration');
+        } else if (ast[1] instanceof types.Vector) {
+          params = ast[1].value.map(function(param) {
+            return param.value;
+          });
         } else {
-          // specified as a list
-          var i = 2;
-          while(ast[i].value !== ']') {
-            params.push(ast[i++].value);
-          }
+          throw new Error('Expected list or vector function signature');
         }
 
         var fn = function() {
           var args = Array.prototype.slice.call(arguments);
           var closure_env = new Env(env, params, args);
           return EVAL(ast.slice(-1), closure_env);
-        }
+        };
 
         // new mal function representation for tco
         return new types.MalFn(ast.slice(-1), params, env, fn);
